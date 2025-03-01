@@ -46,12 +46,9 @@ def group_sum_6(start, nums, target):
         return target == 0
     if nums[start] == 6:
         return group_sum_6(start + 1, nums, target - nums[start])
-    else:
-        target -= nums[start]
-        if group_sum_6(start + 1, nums, target):
-            return True
-        target += nums[start]
-        return group_sum(start + 1, nums, target)
+    if group_sum_6(start + 1, nums, - nums[start]):
+        return True
+    return group_sum(start + 1, nums, target)
 
 def group_no_adj(start, nums, target):
     """
@@ -63,11 +60,11 @@ def group_no_adj(start, nums, target):
     post: return True if nums has a group of ints that sum to target, False otherwise
     """
     if start >= len(nums):
-        return target == 0 
+        return target == 0
     if target - nums[start] >= 0:
         if group_no_adj(start + 2, nums, target - nums[start]):
-            return True 
-        return group_no_adj(start + 1, nums, target)
+            return True
+    return group_no_adj(start + 1, nums, target)
         
 def group_sum_5(start, nums, target):
     """
@@ -79,13 +76,17 @@ def group_sum_5(start, nums, target):
     post: return True if nums has a group of ints that sum to target, False otherwise
     """
     if start >= len(nums):
-        return target == 0 
+        return target == 0
     if nums[start] % 5 == 0:
         target -= nums[start]
         if start + 1 < len(nums) and nums[start + 1] == 1:
             return group_sum_5(start + 2, nums, target)
         else:
             return group_sum_5(start + 1, nums, target)
+    else:
+        excluding = group_sum_5(start + 1, nums, target)
+        including = target >= nums[start] and group_sum_5(start + 1, nums, target - nums[start])
+        return excluding or including
 
 def group_sum_clump(start, nums, target):
     """
@@ -104,7 +105,7 @@ def group_sum_clump(start, nums, target):
     while end + 1 < len(nums) and nums[end] == nums[end + 1]:
         end += 1
     sum_clump = sum(nums[start:end + 1])
-    if group_sum_clump(end + 1, nums, target - sum_clump):
+    if sum_clump <= target and group_sum_clump(end + 1, nums, target - sum_clump):
         return True
     return group_sum_clump(start + 1, nums, target)
 
@@ -117,7 +118,20 @@ def split_array(nums):
     pre: len(nums) >= 0, nums will only contain ints
     post: return True if nums can be split, False otherwise
     """
-
+    if len(nums) < 2:
+        return False
+    total_sum = sum(nums)
+    if total_sum % 2 != 0:
+        return False
+    def helper(start, target):
+        if start >= len(nums):
+            return target == 0
+        if helper(start + 1, target - nums[start]):
+            return True
+        if helper(start + 1, target):
+            return True
+        return False
+    return helper(0, total_sum // 2)
 
 # TODO: Modify this function. You may delete this comment when you are done.
 def split_odd_10(nums):
