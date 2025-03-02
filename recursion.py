@@ -48,7 +48,7 @@ def group_sum_6(start, nums, target):
         return group_sum_6(start + 1, nums, target - nums[start])
     including = group_sum_6(start + 1, nums, target - nums[start])
     excluding = group_sum_6(start + 1, nums, target)
-    return including or excluding 
+    return including or excluding
 
 def group_no_adj(start, nums, target):
     """
@@ -107,7 +107,7 @@ def group_sum_clump(start, nums, target):
         return True
     if group_sum_clump(end + 1, nums, target):
         return True
-    return False 
+    return False
 
 def split_array(nums):
     """
@@ -119,9 +119,9 @@ def split_array(nums):
     post: return True if nums can be split, False otherwise
     """
     if len(nums) == 0:
-        return True 
+        return True
     if len(nums) < 2:
-        return False 
+        return False
     total_sum = sum(nums)
     if total_sum % 2 != 0:
         return False
