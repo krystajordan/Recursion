@@ -46,9 +46,8 @@ def group_sum_6(start, nums, target):
         return target == 0
     if nums[start] == 6:
         return group_sum_6(start + 1, nums, target - nums[start])
-    if group_sum_6(start + 1, nums, - nums[start]):
-        return True
-    return group_sum(start + 1, nums, target)
+    else:
+        return group_sum_6(start + 1, nums, target - nums[start]) or group_sum_6(start + 1, nums, target)
 
 def group_no_adj(start, nums, target):
     """
@@ -82,10 +81,9 @@ def group_sum_5(start, nums, target):
         if start + 1 < len(nums) and nums[start + 1] == 1:
             return group_sum_5(start + 2, nums, target)
         return group_sum_5(start + 1, nums, target)
-    else:
-        excluding = group_sum_5(start + 1, nums, target)
-        including = target >= nums[start] and group_sum_5(start + 1, nums, target - nums[start])
-        return excluding or including
+    excluding = group_sum_5(start + 1, nums, target)
+    including = target >= nums[start] and group_sum_5(start + 1, nums, target - nums[start])
+    return excluding or including
 
 def group_sum_clump(start, nums, target):
     """
@@ -106,7 +104,9 @@ def group_sum_clump(start, nums, target):
     sum_clump = sum(nums[start:end + 1])
     if sum_clump <= target and group_sum_clump(end + 1, nums, target - sum_clump):
         return True
-    return group_sum_clump(start + 1, nums, target)
+    if group_sum_clump(end + 1, nums, target):
+        return True 
+    return False 
 
 def split_array(nums):
     """
@@ -117,8 +117,10 @@ def split_array(nums):
     pre: len(nums) >= 0, nums will only contain ints
     post: return True if nums can be split, False otherwise
     """
+    if len(nums) == 0:
+        return True 
     if len(nums) < 2:
-        return False
+        return False 
     total_sum = sum(nums)
     if total_sum % 2 != 0:
         return False
