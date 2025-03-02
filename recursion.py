@@ -65,7 +65,7 @@ def group_no_adj(start, nums, target):
         if group_no_adj(start + 2, nums, target - nums[start]):
             return True
     return group_no_adj(start + 1, nums, target)
-        
+   
 def group_sum_5(start, nums, target):
     """
     Given a list of ints, determine if there exists a group of some ints that sum to
@@ -81,8 +81,7 @@ def group_sum_5(start, nums, target):
         target -= nums[start]
         if start + 1 < len(nums) and nums[start + 1] == 1:
             return group_sum_5(start + 2, nums, target)
-        else:
-            return group_sum_5(start + 1, nums, target)
+        return group_sum_5(start + 1, nums, target)
     else:
         excluding = group_sum_5(start + 1, nums, target)
         including = target >= nums[start] and group_sum_5(start + 1, nums, target - nums[start])
@@ -133,7 +132,6 @@ def split_array(nums):
         return False
     return helper(0, total_sum // 2)
 
-# TODO: Modify this function. You may delete this comment when you are done.
 def split_odd_10(nums):
     """
     Given a list of ints, determine if the numbers can be split evenly into two groups
@@ -151,7 +149,6 @@ def split_odd_10(nums):
         return option1 or option2
     return helper(0, 0, 0)
 
-# TODO: Modify this function. You may delete this comment when you are done.
 def split_53(nums):
     """
     Given a list of ints, determine if the numbers can be split evenly into two groups
