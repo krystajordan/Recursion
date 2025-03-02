@@ -143,7 +143,13 @@ def split_odd_10(nums):
     pre: len(nums) >= 0, nums will only contain ints
     post: return True if nums can be split, False otherwise
     """
-
+    def helper(index, sum1, sum2):
+        if index == len(nums):
+            return (sum1 % 10 == 0 and sum2 % 2 == 1) or (sum2 % 10 == 0 and sum1 % 2 == 1)
+        option1 = helper(index + 1, sum1 + nums[index], sum2)
+        option2 = helper(index + 1, sum1, sum2 + nums[index])
+        return option1 or option2
+    return helper(0, 0, 0)
 
 # TODO: Modify this function. You may delete this comment when you are done.
 def split_53(nums):
@@ -157,3 +163,14 @@ def split_53(nums):
     pre: len(nums) >= 0, nums will only contain ints
     post: return True if nums can be split, False otherwise
     """
+    def helper(index, group1_sum, group2_sum):
+        if index == len(nums):
+            return group1_sum == group2_sum
+        if nums[index] % 5 == 0:
+            return helper(index + 1, group1_sum + nums[index], group2_sum)
+        if nums[index] % 3 == 0:
+            return helper(index + 1, group1_sum, group2_sum + nums[index])
+        updated_group1 = helper(index + 1, group1_sum + nums[index], group2_sum)
+        updated_group2 = helper(index + 1, group1_sum, group2_sum + nums[index])
+        return updated_group1 or updated_group2
+    return helper(0, 0, 0)
